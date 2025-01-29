@@ -9,8 +9,12 @@ namespace Library.eCommerce.Services
 {
     public class ProductServiceProxy
     {
+        private int lastKey;
         private static object instanceLock = new Object();
-        private ProductServiceProxy() { }
+        private ProductServiceProxy( ) {
+            Products = new List<Product?>();
+            lastKey = 1;
+        }
         private static ProductServiceProxy? instance;
         public static ProductServiceProxy Current
         {
@@ -27,9 +31,26 @@ namespace Library.eCommerce.Services
                 return instance;
             }
         }
+        public List<Product?> Products { get; private set; } // => is the same as products with only a get 
 
-        private List<Product?> list = new List<Product?>();
+        public Product AddOrUpdateProduct(Product product)
+        {
+            if (product.Id == 0)
+            {
+                product.Id = lastKey++;
+                Products.Add( product );
+            }
 
-        public List<Product?> Products => list; // => is the same as products with only a get 
+            return product;
+        }
+        public Product? Remove(Product? product)
+        {
+            if (product != null)
+            {
+                Products.Remove(product);
+            }
+
+            return product;
+        }
     }
 }
