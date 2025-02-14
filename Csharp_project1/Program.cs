@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Xml.Linq;
 using System.Xml.Serialization;
 using Csharp_project1.Models;
 using Library.eCommerce.Services;
@@ -20,10 +22,10 @@ namespace Csharp_project1
 
                 string? input = Console.ReadLine();
                 choice = input != null && input.Length > 0 ? input[0] : ' ';
-            } while (choice != '1' && choice != '2');
 
             List<Product?> list = ProductServiceProxy.Current.Products; // shallow copy
                                                                         //var random = new Random();
+            List<Product?> cart = CartServiceProxy.Current.Cart;
 
 
 
@@ -42,26 +44,30 @@ namespace Csharp_project1
                         case 'C':
                             string? name;
                             double? price;
+                            int? quantity;
                             do
                             {
                                 Console.WriteLine("Type name");
                                 name = Console.ReadLine();
                                 Console.WriteLine("Type Price (USD)");
                                 string? priceInput = Console.ReadLine();
+                                Console.WriteLine("Set availible quantity");
+                                quantity = int.Parse(Console.ReadLine() ?? "-1");
+
 
                                 // TryParse to handle invalid inputs
                                 bool isValidPrice = double.TryParse(priceInput, out double parsedPrice);
-                                price = isValidPrice ? parsedPrice : null;
+                                price = isValidPrice && parsedPrice > 0 ? parsedPrice : null;
 
                                 //write error messages another time
-                            } while (string.IsNullOrEmpty(name) || price  == null);
+                            } while (string.IsNullOrEmpty(name) || price  == null || quantity > 0 || quantity == null);
 
                             ProductServiceProxy.Current.AddOrUpdateProduct(new Product
                             {
                                 Id = 0,
                                 Name = name,
                                 Price = Math.Round((double)price, 2),
-
+                                Quantity = quantity
                             }); 
                             break;
                         case 'R':
@@ -105,12 +111,97 @@ namespace Csharp_project1
                     }
                 } while (choice != 'Q');
             }
-            else { 
-            
-            
-            
-            
+            else if (choice == '2' ) {
+
+                do
+                {
+                    Console.WriteLine("R. Read all intentory items");
+                    Console.WriteLine("A. Add item to cart");
+                    Console.WriteLine("U. Update cart");
+                    Console.WriteLine("D. Delete an item from cart");
+                    Console.WriteLine("Q. Checkout");
+                    string? input = Console.ReadLine();
+                    choice = input != null && input.Length > 0 ? char.ToUpper(input[0]) : ' ';
+
+                    switch (choice)
+                    {
+                        case 'R':
+                            Console.WriteLine("\n");
+                            cart.ForEach(Console.WriteLine);
+                            break;
+                        case 'A':
+                            Console.WriteLine("Choose what item you want to add to cart");
+                            list.ForEach(Console.WriteLine);
+
+                            int select = int.Parse(Console.ReadLine() ?? "-1");
+                            var selectedProd = list.FirstOrDefault(p => p.Id == select);
+                            if (selectedProd != null)
+                            {
+                                CartServiceProxy.Current.AddToCart(selectedProd);
+                            } else
+                            {
+                                Console.WriteLine("invalid choice");
+                            }
+
+                            break;
+                        case 'U':
+                            Console.WriteLine("which cart item would you like to update?");
+                            cart.ForEach(Console.WriteLine);
+
+                            select = int.Parse(Console.ReadLine() ?? "-1");
+                            selectedProd = cart.FirstOrDefault(p => p.Id == select);
+                            if (selectedProd != null)
+                            {
+                                do
+                                {
+                                    Console.WriteLine("would you like to:\nC.change quantity\nR.remove item from cart\nE. exit cart");
+                                    string? input_cart = Console.ReadLine();
+                                    choice = input_cart != null && input_cart.Length > 0 ? char.ToUpper(input_cart[0]) : ' ';
+
+                                    switch (choice) 
+                                    {
+                                        case 'R':
+                                            CartServiceProxy.Current.RemoveFromCart(selectedProd);
+                                            break;
+                                        case 'C':
+                                            int quantity;
+                                            do
+                                            {
+                                                Console.WriteLine("Enter the quantity");
+                                                quantity = int.Parse(Console.ReadLine() ?? "-1");
+
+                                                if (quantity > 1)
+                                                {
+                                                    selectedProd.Quantity = quantity;
+                                                } else if (quantity == 0)
+                                                {
+                                                    CartServiceProxy.Current.RemoveFromCart(selectedProd);
+                                                }
+                                            } while (quantity == -1);      
+                                            break;
+                                        case 'E':
+                                            break;
+                                        default:
+                                            Console.WriteLine("Invalid choice");
+                                            break;
+                                    }
+                                } while (choice != 'E');
+                            }
+                            break;
+                        case 'D':
+                            Console.WriteLine("which product would you like to remove from your cart?");
+                            cart.ForEach(Console.WriteLine);
+                            select = int.Parse(Console.ReadLine() ?? "-1");
+                            selectedProd =  cart.FirstOrDefault(p => p.Id == select);
+                            CartServiceProxy.Current.RemoveFromCart(selectedProd);
+                            break;
+                        default:
+                            Console.WriteLine("Invalid choice. Please choose again.");
+                            break;
+                    }
+                } while (choice != 'Q');
             }
+        } while (choice != '1' && choice != '2' || choice != '3');
 
         }
     }
