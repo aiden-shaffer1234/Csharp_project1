@@ -20,7 +20,7 @@ namespace Csharp_project1.Models
         {  
             get
             {
-                return $"{Id}. {Name}\n\tPrice: {Price}";
+                return $"{Id}. {Name}\t\tPrice: {Price}";
             }
         }
         public Product()
@@ -35,7 +35,6 @@ namespace Csharp_project1.Models
         {
             return Display ?? string.Empty;
         }
-
 
     }
 }

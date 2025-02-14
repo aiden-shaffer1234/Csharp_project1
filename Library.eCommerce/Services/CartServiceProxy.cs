@@ -53,6 +53,19 @@ namespace Library.eCommerce.Services
             return product;
         }
 
+        public double checkOut()
+        {
+
+            double checkOut = 0;
+            foreach (var item in Cart)
+            {
+                checkOut += item?.Price ?? 0;
+            }
+            checkOut *= 1.07;
+            
+            return checkOut;
+        }
+
 
 
 

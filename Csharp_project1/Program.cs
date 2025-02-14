@@ -120,7 +120,7 @@ namespace Csharp_project1
                     Console.WriteLine("U. Update cart");
                     Console.WriteLine("D. Delete an item from cart");
                     Console.WriteLine("Q. Checkout");
-                    string? input = Console.ReadLine();
+                    input = Console.ReadLine();
                     choice = input != null && input.Length > 0 ? char.ToUpper(input[0]) : ' ';
 
                     switch (choice)
@@ -195,11 +195,23 @@ namespace Csharp_project1
                             selectedProd =  cart.FirstOrDefault(p => p.Id == select);
                             CartServiceProxy.Current.RemoveFromCart(selectedProd);
                             break;
+                        case 'Q':
+                                double checkOut = CartServiceProxy.Current.checkOut();
+
+                                foreach (var item in cart)
+                                {
+                                    cart.ForEach(Console.WriteLine);
+                                }
+                                Console.WriteLine("total price = ", checkOut);
+
+                                break;
                         default:
                             Console.WriteLine("Invalid choice. Please choose again.");
                             break;
                     }
                 } while (choice != 'Q');
+
+
             }
         } while (choice != '1' && choice != '2' || choice != '3');
 
