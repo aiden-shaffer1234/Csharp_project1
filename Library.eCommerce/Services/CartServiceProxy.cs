@@ -31,12 +31,19 @@ namespace Library.eCommerce.Services
 
         public List<Product?> Cart { get; private set; }
 
-        public Product? AddToCart(Product? product)
+        public Product? AddToCart(Product? product, int quantity)
         {
 
             if (product != null && product.Id != 0)
             {
-                Cart.Add(product);
+                var clonedProduct = new Product
+                {
+                    Id = product.Id,
+                    Name = product.Name,
+                    Price = product.Price,
+                    Quantity = quantity
+                };
+                Cart.Add(clonedProduct);
             }
 
             return product;
@@ -47,7 +54,8 @@ namespace Library.eCommerce.Services
 
             if (product != null)
             {
-                Cart.Remove(product);
+                var selectedProd = Cart.FirstOrDefault(p => p.Id == product.Id);
+                Cart.Remove(selectedProd);
             }
 
             return product;
@@ -55,7 +63,6 @@ namespace Library.eCommerce.Services
 
         public double checkOut()
         {
-
             double checkOut = 0;
             foreach (var item in Cart)
             {
@@ -65,10 +72,5 @@ namespace Library.eCommerce.Services
             
             return checkOut;
         }
-
-
-
-
-
     }
 }

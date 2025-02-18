@@ -28,7 +28,7 @@ namespace Csharp_project1.Models
             Name = string.Empty;
             Price = 0;
             Description = string.Empty;
-            //Id = 0; what to do here
+            Quantity = 0;
         }
 
         public override string ToString()

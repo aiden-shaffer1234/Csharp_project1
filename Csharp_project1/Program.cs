@@ -137,7 +137,13 @@ namespace Csharp_project1
                             var selectedProd = list.FirstOrDefault(p => p.Id == select);
                             if (selectedProd != null)
                             {
-                                CartServiceProxy.Current.AddToCart(selectedProd);
+                                Console.WriteLine("Quantity?");
+                                int quant = int.Parse(Console.ReadLine() ?? "-1");
+                                if(quant > 0) {
+                                    CartServiceProxy.Current.AddToCart(selectedProd, quant);
+                                } else {
+                                    Console.WriteLine("invalid quantity");
+                                }
                             } else
                             {
                                 Console.WriteLine("invalid choice");
@@ -197,7 +203,7 @@ namespace Csharp_project1
                             break;
                         case 'Q':
                                 double checkOut = CartServiceProxy.Current.checkOut();
-
+                                Console.WriteLine("Items\t\tPrice")
                                 foreach (var item in cart)
                                 {
                                     cart.ForEach(Console.WriteLine);
