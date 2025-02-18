@@ -167,7 +167,7 @@ namespace Csharp_project1
                             case 'U':
                                 if(cart.Count == 0)
                                 {
-                                    Console.WriteLine("cart is empty");
+                                    Console.WriteLine("\nCart is empty\n");
                                     break;
                                 }
                                 Console.WriteLine("which cart item would you like to update?");
@@ -216,7 +216,7 @@ namespace Csharp_project1
                             case 'D':
                                 if (cart.Count == 0)
                                 {
-                                    Console.WriteLine("cart is empty");
+                                    Console.WriteLine("\"\\nCart is empty\\n\"");
                                     break;
                                 }
                                 Console.WriteLine("which product would you like to remove from your cart?");
