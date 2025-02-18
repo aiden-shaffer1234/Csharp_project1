@@ -9,7 +9,9 @@ namespace Library.eCommerce.Services
 {
     public class CartServiceProxy
     {
-        private CartServiceProxy() { }
+        private CartServiceProxy() {
+            Cart = new List<Product?>();
+        }
         private static CartServiceProxy? instance;
         private static object instanceLock = new Object();
 
@@ -64,10 +66,20 @@ namespace Library.eCommerce.Services
         public double checkOut()
         {
             double checkOut = 0;
+            var inventory = ProductServiceProxy.Current.Products;
             foreach (var item in Cart)
             {
-                checkOut += item?.Price ?? 0;
+                if (item != null)
+                {
+                    var inventoryItem = inventory.FirstOrDefault(p => p?.Id == item.Id);
+                    if (inventoryItem != null && item.Quantity <= inventoryItem.Quantity)
+                    {
+                        inventoryItem.Quantity -= item.Quantity;
+                        checkOut += item.Price ?? 0;
+                    }
+                }
             }
+            Cart.Clear();
             checkOut *= 1.07;
             
             return checkOut;

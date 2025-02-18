@@ -20,7 +20,7 @@ namespace Csharp_project1.Models
         {  
             get
             {
-                return $"{Id}. {Name}\t\tPrice: {Price}";
+                return $"{Id}. {Name}\t\tPrice: {Price}\t\tQuantity = {Quantity}";
             }
         }
         public Product()
