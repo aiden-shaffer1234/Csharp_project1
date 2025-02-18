@@ -13,9 +13,9 @@ namespace Csharp_project1
         static void Main(string[] args)
         {
             char choice;
+            Console.WriteLine("Welcome to Amazon!");
             do
             {
-                Console.WriteLine("Welcome to Amazon!");
                 Console.WriteLine("Choose user type:");
                 Console.WriteLine("1. Seller");
                 Console.WriteLine("2. Buyer");
@@ -27,7 +27,6 @@ namespace Csharp_project1
             List<Product?> list = ProductServiceProxy.Current.Products; // shallow copy
                                                                         //var random = new Random();
             List<Product?> cart = CartServiceProxy.Current.Cart;
-
 
 
             if (choice == '1') { 
@@ -111,6 +110,9 @@ namespace Csharp_project1
                             select = int.Parse(Console.ReadLine() ?? "-1");
                             selectedProd = list.FirstOrDefault(p => p.Id == select);
                             ProductServiceProxy.Current.Remove(selectedProd);
+                            break;
+                        case 'Q':
+                            Console.WriteLine("GoodBye!");
                             break;
                         default:
                             Console.WriteLine("Invalid choice. Please choose again.");
@@ -229,6 +231,7 @@ namespace Csharp_project1
                                 Console.WriteLine("\nRECIEPT\nItems\t\tPrice\t\tQuantity\n");
                                 cart.ForEach(Console.WriteLine);
                                 double checkOut = CartServiceProxy.Current.checkOut();
+                                checkOut = Math.Round((double)checkOut, 2);
                                 Console.WriteLine($"\nTotal Price = {checkOut}\n");
                                 break;
                             default:
