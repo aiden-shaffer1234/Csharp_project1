@@ -53,7 +53,7 @@ namespace Csharp_project1
                                 Console.WriteLine("Type Price (USD)");
                                 string? priceInput = Console.ReadLine();
                                 Console.WriteLine("Set availible quantity");
-                                string quantityInput = Console.ReadLine();
+                                string? quantityInput = Console.ReadLine();
                                 bool isValidQuantity = int.TryParse(quantityInput, out quantity);
                                 quantity = isValidQuantity ? quantity : 0;
 
@@ -89,7 +89,7 @@ namespace Csharp_project1
                                     Console.WriteLine("Type updated price (USD)");
                                     string? priceInput = Console.ReadLine();
                                     Console.WriteLine("Set availible quantity");
-                                    string quantityInput = Console.ReadLine();
+                                    string? quantityInput = Console.ReadLine();
                                     bool isValidQuantity = int.TryParse(quantityInput, out quantity);
                                     quantity = isValidQuantity ? quantity : 0;
 
@@ -143,7 +143,7 @@ namespace Csharp_project1
                                 Console.WriteLine("Choose what item you want to add to cart");
                                 list.ForEach(Console.WriteLine);
                                 int select;
-                                string selectInput = Console.ReadLine();
+                                string? selectInput = Console.ReadLine();
                                 bool isValidSelect = int.TryParse(selectInput, out select);
                                 select = isValidSelect ? select : -1;
                                 var selectedProd = list.FirstOrDefault(p => p.Id == select);
