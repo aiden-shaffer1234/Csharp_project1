@@ -8,5 +8,15 @@
             Text="Shop"
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
+
+        <ListView
+            ItemsSource="{Binding Path=Cart}"/>
+
+        <Button Text="Add to cart"/>
+        <Button Text="Remove from cart"/>
+        <Button Text="Edit cart"/>
+
+
     </VerticalStackLayout>
+    
 </ContentPage>

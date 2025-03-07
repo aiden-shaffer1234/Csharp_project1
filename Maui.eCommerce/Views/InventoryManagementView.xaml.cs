@@ -1,3 +1,5 @@
+using Csharp_project1.Models;
+using Library.eCommerce.Services;
 using Maui.eCommerce.ViewModels;
 
 namespace Maui.eCommerce.Views;
@@ -28,6 +30,6 @@ public partial class InventoryManagementView : ContentPage
 
     private void DeleteClicked(object sender, EventArgs e)
     {
-
+        Product? lastProduct = (BindingContext as InventoryManagementViewModel)?.Delete();
     }
 }

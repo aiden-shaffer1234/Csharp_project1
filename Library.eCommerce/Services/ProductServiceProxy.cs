@@ -12,7 +12,12 @@ namespace Library.eCommerce.Services
         
         private static object instanceLock = new Object();
         private ProductServiceProxy( ) {
-            Products = new List<Product?>();
+            Products = new List<Product?>
+            {
+                new Product{Id = 1, Name ="Product 1"},
+                new Product{Id = 2, Name ="Product 2"},
+                new Product{Id = 3, Name ="Product 3"}
+            };
         }
 
         private int LastKey
@@ -64,6 +69,24 @@ namespace Library.eCommerce.Services
             }
 
             return product;
+        }
+
+        public Product? Delete(int id)
+        {
+            if (id == 0)
+            {
+                return null;
+            }
+
+            Product? prod = Products.FirstOrDefault(p => p.Id == id);
+            Products.Remove(prod);
+
+            return prod;
+        }
+
+        public Product? GetById(int id)
+        {
+            return Products.FirstOrDefault(p => p.Id == id);
         }
     }
 }
