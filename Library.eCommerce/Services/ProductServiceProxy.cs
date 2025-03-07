@@ -9,12 +9,25 @@ namespace Library.eCommerce.Services
 {
     public class ProductServiceProxy
     {
-        private int lastKey;
+        
         private static object instanceLock = new Object();
         private ProductServiceProxy( ) {
             Products = new List<Product?>();
-            lastKey = 1;
         }
+
+        private int LastKey
+        {
+            get
+            {
+                if (!Products.Any())
+                {
+                    return 0;
+                }
+
+                return Products.Select(p => p?.Id ?? 0).Max();
+            }
+        }
+
         private static ProductServiceProxy? instance;
         public static ProductServiceProxy Current
         {
@@ -37,7 +50,7 @@ namespace Library.eCommerce.Services
         {
             if (product.Id == 0)
             {
-                product.Id = lastKey++;
+                product.Id = LastKey + 1;
                 Products.Add( product );
             }
 
