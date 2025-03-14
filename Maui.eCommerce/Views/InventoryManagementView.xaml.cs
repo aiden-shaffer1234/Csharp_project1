@@ -20,7 +20,7 @@ public partial class InventoryManagementView : ContentPage
 
     private void AddClicked(object sender, EventArgs e)
     {
-
+        Shell.Current.GoToAsync("//ProductDetails");
     }
 
     private void UpdateClicked(object sender, EventArgs e)

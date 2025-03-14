@@ -41,5 +41,10 @@ namespace Maui.eCommerce.ViewModels
             return item; 
         }
 
+        //public Product? Add()
+        //{
+            
+        //}
+
     }
 }

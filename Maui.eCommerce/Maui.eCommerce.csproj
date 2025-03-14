@@ -67,7 +67,16 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="Views\ProductDetailsView.xaml.cs">
+	    <DependentUpon>ProductDetailsView.xaml</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
 	  <MauiXaml Update="Views\InventoryManagementView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\ProductDetailsView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\ShopView.xaml">
