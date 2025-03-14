@@ -11,7 +11,7 @@
 
         <ListView
             ItemsSource="{Binding Path=Products}"
-            SelectedItem="{Binding ProductSelected}">
+            SelectedItem="{Binding SelectedProduct}">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>

@@ -12,10 +12,12 @@ namespace Maui.eCommerce.ViewModels
         private ProductServiceProxy _svc = ProductServiceProxy.Current; // Reference
 
         public event PropertyChangedEventHandler? PropertyChanged;
+        public int Selected { get; set; }
+        public Product? SelectedProduct { get; set; }
 
         private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
         {
-            if (PropertyChanged != null)
+            if (PropertyChanged is null)
             {
                 throw new ArgumentNullException(nameof(PropertyChanged));
             }
@@ -31,12 +33,9 @@ namespace Maui.eCommerce.ViewModels
             }
         }
 
-        public int Selected { get;  set;}
-        public Product? ProductSelected { get; set; }
-
         public Product? Delete()
         {
-            var item = _svc.Remove(ProductSelected ?? null);
+            var item = _svc.Remove(SelectedProduct ?? null);
             NotifyPropertyChanged("Products");
             return item; 
         }

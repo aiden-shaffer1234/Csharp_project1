@@ -10,10 +10,11 @@
             HorizontalOptions="Center" />
 
         <ListView
-            ItemsSource="{Binding Path=Cart}"/>
+            ItemsSource="{Binding Path=Cart}"
+            SelectedItem ="{Binding SelectedProduct}"/>
 
         <Button Text="Add to cart"/>
-        <Button Text="Remove from cart"/>
+        <Button Text="Remove from cart" Clicked="RemoveClicked"/>
         <Button Text="Edit cart"/>
 
 
