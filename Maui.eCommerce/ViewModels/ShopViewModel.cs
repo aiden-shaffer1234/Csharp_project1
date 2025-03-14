@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -7,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Csharp_project1.Models;
 using Library.eCommerce.Services;
+using Microsoft.Maui.Controls.Handlers.Items;
 
 namespace Maui.eCommerce.ViewModels
 {
@@ -17,9 +19,9 @@ namespace Maui.eCommerce.ViewModels
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        public List<Product?> Cart {
+        public ObservableCollection<Product?> Cart {
             get {
-                return _svc.Cart;
+                return new ObservableCollection<Product?>(_svc.Cart);
             } 
         }
 

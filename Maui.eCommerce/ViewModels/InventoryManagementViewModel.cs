@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Net.WebSockets;
 using System.Runtime.CompilerServices;
 using Csharp_project1.Models;
@@ -25,11 +26,11 @@ namespace Maui.eCommerce.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public List<Product?> Products
+        public ObservableCollection<Product?> Products
         {
             get
             {
-                return _svc.Products;
+                return new ObservableCollection<Product?>(_svc.Products);
             }
         }
 
