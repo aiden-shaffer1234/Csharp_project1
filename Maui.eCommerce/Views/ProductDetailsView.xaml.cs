@@ -16,15 +16,6 @@ public partial class ProductDetailsView : ContentPage
     private void OkClicked(object sender, EventArgs e)
     {
         (BindingContext as ProductDetailsViewModel)?.AddOrUpdate();
-        //var name = (BindingContext as ProductDetailsViewModel)?.Name;
-        //var quant = (BindingContext as ProductDetailsViewModel)?.Quantity;
-        //var price = (BindingContext as ProductDetailsViewModel)?.Price;
-        //ProductServiceProxy.Current.AddOrUpdateProduct(new Product
-        //{
-        //    Name = name,
-        //    Quantity = quant,
-        //    Price = price
-        //});
         Shell.Current.GoToAsync("//InventoryManagement");
     }
 

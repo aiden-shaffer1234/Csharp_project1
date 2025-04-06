@@ -44,7 +44,7 @@ namespace Csharp_project1
                         case 'C':
                             string? name;
                             double? price;
-                            int quantity;
+                            int quantity; 
                             do
                             {
                                 Console.WriteLine("Type name");
@@ -78,7 +78,10 @@ namespace Csharp_project1
                             break;
                         case 'U':
                             Console.WriteLine("which product would you like to update?");
-                            int select = int.Parse(Console.ReadLine() ?? "-1");
+                            string? selectInput = Console.ReadLine();
+                            int select;
+                            bool selectParseBool = int.TryParse(selectInput, out select);
+                            select = selectParseBool ? select : -1;
                             var selectedProd = list.FirstOrDefault(p => p.Id == select);
                             if (selectedProd != null)
                             {
@@ -102,6 +105,7 @@ namespace Csharp_project1
 
                                 selectedProd.Name = name;
                                 selectedProd.Price = Math.Round((double)price, 2);
+                                selectedProd.Quantity = quantity;
                             }
                             break;
                         case 'D':

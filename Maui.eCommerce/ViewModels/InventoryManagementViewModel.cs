@@ -13,6 +13,7 @@ namespace Maui.eCommerce.ViewModels
         private ProductServiceProxy _svc = ProductServiceProxy.Current; // Reference
 
         public event PropertyChangedEventHandler? PropertyChanged;
+        public string? Query {  get; set; }
         public int Selected { get; set; }
         public Product? SelectedProduct { get; set; }
 
@@ -35,7 +36,8 @@ namespace Maui.eCommerce.ViewModels
         {
             get
             {
-                return new ObservableCollection<Product?>(_svc.Products);
+                var filteredList = _svc.Products.Where(p => p?.Name?.ToLower().Contains(Query?.ToLower() ?? string.Empty) ?? false);
+                return new ObservableCollection<Product?>(filteredList);
             }
         }
 
@@ -45,13 +47,5 @@ namespace Maui.eCommerce.ViewModels
             NotifyPropertyChanged("Products");
             return item; 
         }
-
-
-
-        //public Product? Add()
-        //{
-            
-        //}
-
     }
 }
