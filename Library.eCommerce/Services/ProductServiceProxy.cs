@@ -51,15 +51,19 @@ namespace Library.eCommerce.Services
         }
         public List<Product?> Products { get; private set; } // => is the same as products with only a get 
 
-        public Product AddOrUpdateProduct(Product product)
+        public Product AddOrUpdateProduct(Product newProduct)
         {
-            if (product.Id == 0)
+            if (newProduct.Id == 0)
             {
-                product.Id = LastKey + 1;
-                Products.Add( product );
+                newProduct.Id = LastKey + 1;
+                Products.Add(newProduct);
+            } else
+            {
+                var oldProduct = GetById(newProduct.Id);
+                oldProduct = newProduct;
             }
 
-            return product;
+            return newProduct;
         }
         public Product? Remove(Product? product)
         {

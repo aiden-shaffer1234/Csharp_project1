@@ -11,21 +11,62 @@ namespace Maui.eCommerce.ViewModels
     public class ProductDetailsViewModel
     {
         ProductServiceProxy _svc = ProductServiceProxy.Current;
-        public string? Name {  get; set; }
-        public int? Quantity {  get; set; }
-        public int? Price { get; set; }
-
-
-        public Product? Add()
-        {
-            Product product = new Product
+        public string? Name {
+            get 
             {
-                Name = this.Name,
-                Quantity = this.Quantity,
-                Price = this.Price,
-            };
-            _svc.AddOrUpdateProduct(product);
-            return product;
+                return Model?.Name ?? string.Empty;
+            }
+            set 
+            {
+                if (Model != null && Model.Name != value)
+                {
+                    Model.Name = value;
+                }
+            } 
+        }
+        public int? Quantity {
+            get
+            {
+                return Model?.Quantity ?? -1;
+            }
+            set
+            {
+                if (Model != null && Model.Quantity != value)
+                {
+                    Model.Quantity = value;
+                }
+            }
+        }
+        public double? Price {
+            get
+            {
+                return Model?.Price ?? -1;
+            }
+            set
+            {
+                if (Model != null && Model.Price != value)
+                {
+                    Model.Price = value;
+                }
+            }
+        }
+
+        public Product? Model { get; set; }
+
+        public ProductDetailsViewModel() 
+        { 
+            Model = new Product();
+        }
+
+        public ProductDetailsViewModel(Product? model)
+        {
+            Model = model;
+        }
+
+        public void AddOrUpdate()
+        {
+            // DP SOMETHONG TO CONDITION THE UPDATE VS ADD
+            _svc.AddOrUpdateProduct(Model);
         }
     }
 }
