@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using Csharp_project1.Models;
+using Library.eCommerce.Models;
 using Library.eCommerce.Services;
 using Microsoft.Maui.Controls.Handlers.Items;
 
@@ -15,13 +16,13 @@ namespace Maui.eCommerce.ViewModels
     public class ShopViewModel : INotifyPropertyChanged
     {
         private CartServiceProxy _svc = CartServiceProxy.Current;
-        public Product? SelectedProduct { get; set; }
+        public Item? SelectedProduct { get; set; }
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        public ObservableCollection<Product?> Cart {
+        public ObservableCollection<Item?> Cart {
             get {
-                return new ObservableCollection<Product?>(_svc.Cart);
+                return new ObservableCollection<Item?>(_svc.Cart);
             } 
         }
 
@@ -35,7 +36,7 @@ namespace Maui.eCommerce.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public Product? Delete()
+        public Item? Delete()
         {
             var item = _svc.RemoveFromCart(SelectedProduct ?? null);
             NotifyPropertyChanged("Cart");

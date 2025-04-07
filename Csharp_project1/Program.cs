@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 using Csharp_project1.Models;
+using Library.eCommerce.Models;
 using Library.eCommerce.Services;
 
 
@@ -24,9 +25,9 @@ namespace Csharp_project1
                 string? input = Console.ReadLine();
                 choice = input != null && input.Length > 0 ? input[0] : ' ';
 
-                List<Product?> list = ProductServiceProxy.Current.Products; // shallow copy
+                List<Item?> list = ProductServiceProxy.Current.Products; // shallow copy
                                                                             //var random = new Random();
-                List<Product?> cart = CartServiceProxy.Current.Cart;
+                List<Item?> cart = CartServiceProxy.Current.Cart;
 
 
                 if (choice == '1')
@@ -66,11 +67,15 @@ namespace Csharp_project1
                                     //write error messages another time
                                 } while (string.IsNullOrEmpty(name) || price == null || quantity <= 0);
 
-                                ProductServiceProxy.Current.AddOrUpdateProduct(new Product
+                                ProductServiceProxy.Current.AddOrUpdateProduct(new Item
                                 {
                                     Id = 0,
-                                    Name = name,
-                                    Price = Math.Round((double)price, 2),
+                                    Product = new Product
+                                    {
+                                        Id = 0,
+                                        Name = name,
+                                        Price = Math.Round((double)price, 2)
+                                    },
                                     Quantity = quantity
                                 });
                                 break;
@@ -105,8 +110,8 @@ namespace Csharp_project1
                                         //write error messages another time
                                     } while (string.IsNullOrEmpty(name) || price == null || quantity <= 0);
 
-                                    selectedProd.Name = name;
-                                    selectedProd.Price = Math.Round((double)price, 2);
+                                    selectedProd.Product.Name = name;
+                                    selectedProd.Product.Price = Math.Round((double)price, 2);
                                     selectedProd.Quantity = quantity;
                                 }
                                 break;
@@ -114,8 +119,7 @@ namespace Csharp_project1
                                 Console.WriteLine("which product would you like to remove?");
                                 list.ForEach(Console.WriteLine);
                                 select = int.Parse(Console.ReadLine() ?? "-1");
-                                selectedProd = list.FirstOrDefault(p => p.Id == select);
-                                ProductServiceProxy.Current.Remove(selectedProd);
+                                ProductServiceProxy.Current.Delete(select);
                                 break;
                             case 'Q':
                                 Console.WriteLine("GoodBye!");
@@ -158,13 +162,18 @@ namespace Csharp_project1
                                 {
                                     Console.WriteLine("Quantity?");
                                     int quant = int.Parse(Console.ReadLine() ?? "0");
+                                    Item addedItem = new Item { 
+                                        Id = select,
+                                        Product = selectedProd.Product,
+                                        Quantity = quant,
+                                    };
                                     if (selectedCartProd != null && selectedCartProd.Quantity + quant <= selectedProd.Quantity)
                                     {
                                         selectedProd.Quantity = quant + selectedCartProd.Quantity;
                                     }
                                     else if (quant > 0 && quant <= selectedProd.Quantity)
                                     {
-                                        CartServiceProxy.Current.AddToCart(selectedProd, quant);
+                                        CartServiceProxy.Current.AddToCart(addedItem);
                                     }
                                     else
                                     {

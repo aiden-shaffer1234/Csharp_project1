@@ -26,7 +26,7 @@
                                 <ColumnDefinition/>
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
-                            <Label Grid.Column="0" Text="{Binding Display}"/>
+                            <Label Grid.Column="0" Text="{Binding Product.Display}"/>
                             <Button Grid.Column="1" Text="Edit"/>
                             <Button Grid.Column="2" Text="Delete"/>
                         </Grid>

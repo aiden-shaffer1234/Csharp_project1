@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Net.WebSockets;
 using System.Runtime.CompilerServices;
 using Csharp_project1.Models;
+using Library.eCommerce.Models;
 using Library.eCommerce.Services;
 
 namespace Maui.eCommerce.ViewModels
@@ -15,7 +16,7 @@ namespace Maui.eCommerce.ViewModels
         public event PropertyChangedEventHandler? PropertyChanged;
         public string? Query {  get; set; }
         public int Selected { get; set; }
-        public Product? SelectedProduct { get; set; }
+        public Item? SelectedProduct { get; set; }
 
         private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
         {
@@ -32,16 +33,16 @@ namespace Maui.eCommerce.ViewModels
             NotifyPropertyChanged(nameof(Products));
         }
 
-        public ObservableCollection<Product?> Products
+        public ObservableCollection<Item?> Products
         {
             get
             {
-                var filteredList = _svc.Products.Where(p => p?.Name?.ToLower().Contains(Query?.ToLower() ?? string.Empty) ?? false);
-                return new ObservableCollection<Product?>(filteredList);
+                var filteredList = _svc.Products.Where(p => p?.Product?.Name?.ToLower().Contains(Query?.ToLower() ?? string.Empty) ?? false);
+                return new ObservableCollection<Item?>(filteredList);
             }
         }
 
-        public Product? Delete()
+        public Item? Delete()
         {
             var item = _svc.Remove(SelectedProduct ?? null);
             NotifyPropertyChanged("Products");

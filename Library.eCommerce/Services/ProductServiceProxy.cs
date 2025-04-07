@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Csharp_project1.Models;
+using Library.eCommerce.Models;
 
 namespace Library.eCommerce.Services
 {
@@ -12,11 +13,11 @@ namespace Library.eCommerce.Services
         
         private static object instanceLock = new Object();
         private ProductServiceProxy( ) {
-            Products = new List<Product?>
+            Products = new List<Item?>
             {
-                new Product{Id = 1, Name ="Product 1"},
-                new Product{Id = 2, Name ="Product 2"},
-                new Product{Id = 3, Name ="Product 3"}
+                new Item{ Product = new Product{Id = 1, Name ="Product 1"}, Id = 1, Quantity = 10},
+                new Item{ Product = new Product{Id = 2, Name ="Product 2"}, Id = 2, Quantity = 20},
+                new Item{ Product = new Product{Id = 3, Name ="Product 3"}, Id = 3, Quantity = 30}
             };
         }
 
@@ -49,23 +50,26 @@ namespace Library.eCommerce.Services
                 return instance;
             }
         }
-        public List<Product?> Products { get; private set; } // => is the same as products with only a get 
+        public List<Item?> Products { get; private set; } // => is the same as products with only a get 
 
-        public Product AddOrUpdateProduct(Product newProduct)
+        public Item AddOrUpdateProduct(Item newItem)
         {
-            if (newProduct.Id == 0)
+            if (newItem.Id == 0)
             {
-                newProduct.Id = LastKey + 1;
-                Products.Add(newProduct);
-            } else
+                newItem.Id = LastKey + 1;
+                newItem.Product.Id = newItem.Id;
+                Products.Add(newItem);
+            } else //watch out
             {
-                var oldProduct = GetById(newProduct.Id);
-                oldProduct = newProduct;
+                var oldItem = GetById(newItem.Id);
+                oldItem = newItem;
             }
 
-            return newProduct;
+            return newItem;
         }
-        public Product? Remove(Product? product)
+
+        // my delete before i looked at the repo
+        public Item? Remove(Item? product)
         {
             if (product != null)
             {
@@ -75,20 +79,20 @@ namespace Library.eCommerce.Services
             return product;
         }
 
-        public Product? Delete(int id)
+        public Item? Delete(int id)
         {
             if (id == 0)
             {
                 return null;
             }
 
-            Product? prod = Products.FirstOrDefault(p => p.Id == id);
+            Item? prod = Products.FirstOrDefault(p => p.Id == id);
             Products.Remove(prod);
 
             return prod;
         }
 
-        public Product? GetById(int id)
+        public Item? GetById(int id)
         {
             return Products.FirstOrDefault(p => p.Id == id);
         }

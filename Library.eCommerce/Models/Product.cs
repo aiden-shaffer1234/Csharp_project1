@@ -12,8 +12,6 @@ namespace Csharp_project1.Models
 
         //maybe private setters
         public int Id { get; set; }
-        public int? Quantity { get; set; }
-        public string? Description { get; set; }
         public double? Price {  get; set; } 
 
         public string? Display 
@@ -27,8 +25,6 @@ namespace Csharp_project1.Models
         {
             Name = string.Empty;
             Price = 0;
-            Description = string.Empty;
-            Quantity = 0;
         }
 
         public override string ToString()

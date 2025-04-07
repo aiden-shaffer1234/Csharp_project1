@@ -1,4 +1,5 @@
 using Csharp_project1.Models;
+using Library.eCommerce.Models;
 using Library.eCommerce.Services;
 using Maui.eCommerce.ViewModels;
 
@@ -31,7 +32,7 @@ public partial class InventoryManagementView : ContentPage
 
     private void DeleteClicked(object sender, EventArgs e)
     {
-        Product? lastProduct = (BindingContext as InventoryManagementViewModel)?.Delete();
+        Item? lastProduct = (BindingContext as InventoryManagementViewModel)?.Delete();
     }
 
     private void ContentPage_NavigatedTo(object sender, NavigatedToEventArgs e)

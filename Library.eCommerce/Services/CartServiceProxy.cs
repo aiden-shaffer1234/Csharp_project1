@@ -4,17 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Csharp_project1.Models;
+using Library.eCommerce.Models;
 
 namespace Library.eCommerce.Services
 {
     public class CartServiceProxy
     {
         private CartServiceProxy() {
-            items = new List<Product>
+            items = new List<Item>
             {
-                new Product{Id = 1, Name ="Product 1"},
-                new Product{Id = 2, Name ="Product 2"},
-                new Product{Id = 3, Name ="Product 3"}
+                new Item{ Product = new Product{Id = 1, Name ="Product 1"}, Id = 1, Quantity = 10},
+                new Item{ Product = new Product{Id = 2, Name ="Product 2"}, Id = 2, Quantity = 20},
+                new Item{ Product = new Product{Id = 3, Name ="Product 3"}, Id = 3, Quantity = 30}
             };
         }
         private static CartServiceProxy? instance;
@@ -36,26 +37,25 @@ namespace Library.eCommerce.Services
             }
         }
 
-        private List<Product> items;
+        private List<Item> items;
 
-        public List<Product> Cart { 
+        public List<Item> Cart { 
             get 
             {
                 return items;
             }
         }
 
-        public Product? AddToCart(Product? product, int quantity)
+        public Item? AddToCart(Item? product)
         {
 
             if (product != null && product.Id != 0)
             {
-                var clonedProduct = new Product
+                var clonedProduct = new Item
                 {
                     Id = product.Id,
-                    Name = product.Name,
-                    Price = product.Price,
-                    Quantity = quantity
+                    Product = product.Product,
+                    Quantity = product.Quantity
                 };
                 Cart.Add(clonedProduct);
             }
@@ -63,7 +63,7 @@ namespace Library.eCommerce.Services
             return product;
         }
 
-        public Product? RemoveFromCart(Product? product)
+        public Item? RemoveFromCart(Item? product)
         {
 
             if (product != null)
@@ -81,15 +81,7 @@ namespace Library.eCommerce.Services
             var inventory = ProductServiceProxy.Current.Products;
             foreach (var item in Cart)
             {
-                if (item != null)
-                {
-                    var inventoryItem = inventory.FirstOrDefault(p => p?.Id == item.Id);
-                    if (inventoryItem != null && item.Quantity <= inventoryItem.Quantity)
-                    {
-                        inventoryItem.Quantity -= item.Quantity;
-                        checkOut += item.Price ?? 0;
-                    }
-                }
+
             }
             Cart.Clear();
             checkOut *= 1.07;

@@ -1,4 +1,5 @@
 using Csharp_project1.Models;
+using Library.eCommerce.Models;
 using Maui.eCommerce.ViewModels;
 
 namespace Maui.eCommerce.Views;
@@ -13,6 +14,6 @@ public partial class ShopView : ContentPage
 
     private void RemoveClicked(object sender, EventArgs e)
     {
-		Product? lastProduct = (BindingContext as ShopViewModel)?.Delete();
+        Item? lastProduct = (BindingContext as ShopViewModel)?.Delete();
     }
 }

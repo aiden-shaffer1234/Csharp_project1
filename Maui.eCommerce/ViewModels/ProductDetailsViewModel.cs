@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Csharp_project1.Models;
+using Library.eCommerce.Models;
 using Library.eCommerce.Services;
 
 namespace Maui.eCommerce.ViewModels
@@ -14,13 +15,13 @@ namespace Maui.eCommerce.ViewModels
         public string? Name {
             get 
             {
-                return Model?.Name ?? string.Empty;
+                return Model?.Product?.Name ?? string.Empty;
             }
             set 
             {
-                if (Model != null && Model.Name != value)
+                if (Model != null && Model.Product.Name != value)
                 {
-                    Model.Name = value;
+                    Model.Product.Name = value;
                 }
             } 
         }
@@ -40,25 +41,25 @@ namespace Maui.eCommerce.ViewModels
         public double? Price {
             get
             {
-                return Model?.Price ?? -1;
+                return Model?.Product.Price ?? -1;
             }
             set
             {
-                if (Model != null && Model.Price != value)
+                if (Model != null && Model.Product.Price != value)
                 {
-                    Model.Price = value;
+                    Model.Product.Price = value;
                 }
             }
         }
 
-        public Product? Model { get; set; }
+        public Item? Model { get; set; }
 
         public ProductDetailsViewModel() 
         { 
-            Model = new Product();
+            Model = new Item();
         }
 
-        public ProductDetailsViewModel(Product? model)
+        public ProductDetailsViewModel(Item? model)
         {
             Model = model;
         }
