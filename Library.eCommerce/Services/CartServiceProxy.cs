@@ -10,7 +10,7 @@ namespace Library.eCommerce.Services
     public class CartServiceProxy
     {
         private CartServiceProxy() {
-            Cart = new List<Product?>
+            items = new List<Product>
             {
                 new Product{Id = 1, Name ="Product 1"},
                 new Product{Id = 2, Name ="Product 2"},
@@ -36,7 +36,14 @@ namespace Library.eCommerce.Services
             }
         }
 
-        public List<Product?> Cart { get; private set; }
+        private List<Product> items;
+
+        public List<Product> Cart { 
+            get 
+            {
+                return items;
+            }
+        }
 
         public Product? AddToCart(Product? product, int quantity)
         {

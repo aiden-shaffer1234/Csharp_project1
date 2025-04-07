@@ -24,107 +24,109 @@ namespace Csharp_project1
                 string? input = Console.ReadLine();
                 choice = input != null && input.Length > 0 ? input[0] : ' ';
 
-            List<Product?> list = ProductServiceProxy.Current.Products; // shallow copy
-                                                                        //var random = new Random();
-            List<Product?> cart = CartServiceProxy.Current.Cart;
+                List<Product?> list = ProductServiceProxy.Current.Products; // shallow copy
+                                                                            //var random = new Random();
+                List<Product?> cart = CartServiceProxy.Current.Cart;
 
 
-            if (choice == '1') { 
-                do {
-                    Console.WriteLine("C. Create new intentory item");
-                    Console.WriteLine("R. Read all intentory items");
-                    Console.WriteLine("U. Update an intentory item");
-                    Console.WriteLine("D. Delete an intentory item");
-                    Console.WriteLine("Q. Quit");
-                    input = Console.ReadLine();
-                    choice = input != null && input.Length > 0 ? char.ToUpper(input[0]) : ' ';
-
-                    switch (choice) 
+                if (choice == '1')
+                {
+                    do
                     {
-                        case 'C':
-                            string? name;
-                            double? price;
-                            int quantity; 
-                            do
-                            {
-                                Console.WriteLine("Type name");
-                                name = Console.ReadLine();
+                        Console.WriteLine("C. Create new intentory item");
+                        Console.WriteLine("R. Read all intentory items");
+                        Console.WriteLine("U. Update an intentory item");
+                        Console.WriteLine("D. Delete an intentory item");
+                        Console.WriteLine("Q. Quit");
+                        input = Console.ReadLine();
+                        choice = input != null && input.Length > 0 ? char.ToUpper(input[0]) : ' ';
 
-                                Console.WriteLine("Type Price (USD)");
-                                string? priceInput = Console.ReadLine();
-                                Console.WriteLine("Set availible quantity");
-                                string? quantityInput = Console.ReadLine();
-                                bool isValidQuantity = int.TryParse(quantityInput, out quantity);
-                                quantity = isValidQuantity ? quantity : 0;
-
-                                // TryParse to handle invalid inputs
-                                bool isValidPrice = double.TryParse(priceInput, out double parsedPrice);
-                                price = isValidPrice && parsedPrice > 0 ? parsedPrice : null;
-
-                                //write error messages another time
-                            } while (string.IsNullOrEmpty(name) || price == null || quantity <= 0);
-
-                            ProductServiceProxy.Current.AddOrUpdateProduct(new Product
-                            {
-                                Id = 0,
-                                Name = name,
-                                Price = Math.Round((double)price, 2),
-                                Quantity = quantity
-                            }); 
-                            break;
-                        case 'R':
-                            Console.WriteLine("\n");
-                            list.ForEach(Console.WriteLine);
-                            break;
-                        case 'U':
-                            Console.WriteLine("which product would you like to update?");
-                            string? selectInput = Console.ReadLine();
-                            int select;
-                            bool selectParseBool = int.TryParse(selectInput, out select);
-                            select = selectParseBool ? select : -1;
-                            var selectedProd = list.FirstOrDefault(p => p.Id == select);
-                            if (selectedProd != null)
-                            {
+                        switch (choice)
+                        {
+                            case 'C':
+                                string? name;
+                                double? price;
+                                int quantity;
                                 do
                                 {
-                                    Console.WriteLine("Type updated name");
+                                    Console.WriteLine("Type name");
                                     name = Console.ReadLine();
-                                    Console.WriteLine("Type updated price (USD)");
+
+                                    Console.WriteLine("Type Price (USD)");
                                     string? priceInput = Console.ReadLine();
                                     Console.WriteLine("Set availible quantity");
                                     string? quantityInput = Console.ReadLine();
                                     bool isValidQuantity = int.TryParse(quantityInput, out quantity);
                                     quantity = isValidQuantity ? quantity : 0;
 
-                                        // TryParse to handle invalid inputs
+                                    // TryParse to handle invalid inputs
                                     bool isValidPrice = double.TryParse(priceInput, out double parsedPrice);
-                                    price = isValidPrice ? parsedPrice : null;
+                                    price = isValidPrice && parsedPrice > 0 ? parsedPrice : null;
 
                                     //write error messages another time
                                 } while (string.IsNullOrEmpty(name) || price == null || quantity <= 0);
 
-                                selectedProd.Name = name;
-                                selectedProd.Price = Math.Round((double)price, 2);
-                                selectedProd.Quantity = quantity;
-                            }
-                            break;
-                        case 'D':
-                            Console.WriteLine("which product would you like to remove?");
-                            list.ForEach(Console.WriteLine);
-                            select = int.Parse(Console.ReadLine() ?? "-1");
-                            selectedProd = list.FirstOrDefault(p => p.Id == select);
-                            ProductServiceProxy.Current.Remove(selectedProd);
-                            break;
-                        case 'Q':
-                            Console.WriteLine("GoodBye!");
-                            break;
-                        default:
-                            Console.WriteLine("Invalid choice. Please choose again.");
-                            break;
-                    }
-                } while (choice != 'Q');
-            }
-            else if (choice == '2' ) 
+                                ProductServiceProxy.Current.AddOrUpdateProduct(new Product
+                                {
+                                    Id = 0,
+                                    Name = name,
+                                    Price = Math.Round((double)price, 2),
+                                    Quantity = quantity
+                                });
+                                break;
+                            case 'R':
+                                Console.WriteLine("\n");
+                                list.ForEach(Console.WriteLine);
+                                break;
+                            case 'U':
+                                Console.WriteLine("which product would you like to update?");
+                                string? selectInput = Console.ReadLine();
+                                int select;
+                                bool selectParseBool = int.TryParse(selectInput, out select);
+                                select = selectParseBool ? select : -1;
+                                var selectedProd = list.FirstOrDefault(p => p.Id == select);
+                                if (selectedProd != null)
+                                {
+                                    do
+                                    {
+                                        Console.WriteLine("Type updated name");
+                                        name = Console.ReadLine();
+                                        Console.WriteLine("Type updated price (USD)");
+                                        string? priceInput = Console.ReadLine();
+                                        Console.WriteLine("Set availible quantity");
+                                        string? quantityInput = Console.ReadLine();
+                                        bool isValidQuantity = int.TryParse(quantityInput, out quantity);
+                                        quantity = isValidQuantity ? quantity : 0;
+
+                                        // TryParse to handle invalid inputs
+                                        bool isValidPrice = double.TryParse(priceInput, out double parsedPrice);
+                                        price = isValidPrice ? parsedPrice : null;
+
+                                        //write error messages another time
+                                    } while (string.IsNullOrEmpty(name) || price == null || quantity <= 0);
+
+                                    selectedProd.Name = name;
+                                    selectedProd.Price = Math.Round((double)price, 2);
+                                    selectedProd.Quantity = quantity;
+                                }
+                                break;
+                            case 'D':
+                                Console.WriteLine("which product would you like to remove?");
+                                list.ForEach(Console.WriteLine);
+                                select = int.Parse(Console.ReadLine() ?? "-1");
+                                selectedProd = list.FirstOrDefault(p => p.Id == select);
+                                ProductServiceProxy.Current.Remove(selectedProd);
+                                break;
+                            case 'Q':
+                                Console.WriteLine("GoodBye!");
+                                break;
+                            default:
+                                Console.WriteLine("Invalid choice. Please choose again.");
+                                break;
+                        }
+                    } while (choice != 'Q');
+                }
+                else if (choice == '2')
                 {
                     do
                     {
@@ -159,19 +161,24 @@ namespace Csharp_project1
                                     if (selectedCartProd != null && selectedCartProd.Quantity + quant <= selectedProd.Quantity)
                                     {
                                         selectedProd.Quantity = quant + selectedCartProd.Quantity;
-                                    }else if(quant > 0 && quant <= selectedProd.Quantity) {
+                                    }
+                                    else if (quant > 0 && quant <= selectedProd.Quantity)
+                                    {
                                         CartServiceProxy.Current.AddToCart(selectedProd, quant);
-                                    } else {
+                                    }
+                                    else
+                                    {
                                         Console.WriteLine("Invalid Quantity. Could not complete addition");
                                     }
-                                } else
+                                }
+                                else
                                 {
                                     Console.WriteLine("invalid choice");
                                 }
 
                                 break;
                             case 'U':
-                                if(cart.Count == 0)
+                                if (cart.Count == 0)
                                 {
                                     Console.WriteLine("\nCart is empty\n");
                                     break;
@@ -189,7 +196,7 @@ namespace Csharp_project1
                                         string? input_cart = Console.ReadLine();
                                         choice = input_cart != null && input_cart.Length > 0 ? char.ToUpper(input_cart[0]) : ' ';
 
-                                        switch (choice) 
+                                        switch (choice)
                                         {
                                             case 'R':
                                                 CartServiceProxy.Current.RemoveFromCart(selectedProd);
@@ -204,11 +211,12 @@ namespace Csharp_project1
                                                     if (quantity > 1)
                                                     {
                                                         selectedProd.Quantity = quantity;
-                                                    } else if (quantity == 0)
+                                                    }
+                                                    else if (quantity == 0)
                                                     {
                                                         CartServiceProxy.Current.RemoveFromCart(selectedProd);
                                                     }
-                                                } while (quantity == -1);      
+                                                } while (quantity == -1);
                                                 break;
                                             case 'E':
                                                 break;
@@ -228,7 +236,7 @@ namespace Csharp_project1
                                 Console.WriteLine("which product would you like to remove from your cart?");
                                 cart.ForEach(Console.WriteLine);
                                 select = int.Parse(Console.ReadLine() ?? "-1");
-                                selectedProd =  cart.FirstOrDefault(p => p.Id == select);
+                                selectedProd = cart.FirstOrDefault(p => p.Id == select);
                                 CartServiceProxy.Current.RemoveFromCart(selectedProd);
                                 break;
                             case 'Q':
@@ -243,8 +251,8 @@ namespace Csharp_project1
                                 break;
                         }
                     } while (choice != 'Q');
-            }
-        } while ((choice != '1' || choice != '2') && choice != '3');
+                }
+            } while ((choice != '1' || choice != '2') && choice != '3');
 
         }
     }
