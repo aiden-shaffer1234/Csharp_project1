@@ -53,15 +53,26 @@ namespace Maui.eCommerce.ViewModels
         }
 
         public Item? Model { get; set; }
+        private Item? cachedModel { get; set; }
 
         public ProductDetailsViewModel() 
         { 
             Model = new Item();
+            cachedModel = null;
         }
 
         public ProductDetailsViewModel(Item? model)
         {
             Model = model;
+            if (model != null)
+            {
+                cachedModel = new Item(model);
+            }
+        }
+
+        public void Undo()
+        {
+            Model = ProductServiceProxy.Current.AddOrUpdateProduct(cachedModel);
         }
 
         public void AddOrUpdate()

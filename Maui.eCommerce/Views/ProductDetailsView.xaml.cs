@@ -22,6 +22,7 @@ public partial class ProductDetailsView : ContentPage
 
     private void GoBackClicked(object sender, EventArgs e)
     {
+        (BindingContext as ProductDetailsViewModel)?.Undo();
 		Shell.Current.GoToAsync("//InventoryManagement");
     }
 

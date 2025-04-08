@@ -21,6 +21,14 @@ namespace Library.eCommerce.Models
             Quantity = 0;
         }
 
+        public Item(Item copy)
+        {
+            Id = copy.Id;
+            Product = new Product(copy.Product);
+            Quantity = copy.Id;
+        }
+
+
         public override string ToString()
         {
             return $"{Product} \t Quantity:{Quantity}";

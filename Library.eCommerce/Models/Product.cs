@@ -27,6 +27,13 @@ namespace Csharp_project1.Models
             Price = 0;
         }
 
+        public Product(Product copy)
+        {
+            Id = copy.Id;
+            Name = copy.Name;
+            Price = copy.Price;
+        }
+
         public override string ToString()
         {
             return Display ?? string.Empty;
