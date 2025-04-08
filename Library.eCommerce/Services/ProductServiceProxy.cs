@@ -13,7 +13,7 @@ namespace Library.eCommerce.Services
         
         private static object instanceLock = new Object();
         private ProductServiceProxy( ) {
-            Products = new List<Item?>
+            Products = new List<Item>
             {
                 new Item{ Product = new Product{Id = 1, Name ="Product 1"}, Id = 1, Quantity = 10},
                 new Item{ Product = new Product{Id = 2, Name ="Product 2"}, Id = 2, Quantity = 20},

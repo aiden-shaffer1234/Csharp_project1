@@ -23,7 +23,7 @@ namespace Library.eCommerce.Models
 
         public override string ToString()
         {
-            return Display ?? string.Empty;
+            return $"{Product} \t Quantity:{Quantity}";
         }
 
         public string? Display

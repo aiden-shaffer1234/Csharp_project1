@@ -12,8 +12,8 @@ public partial class ShopView : ContentPage
 		BindingContext = new ShopViewModel();
 	}
 
-    private void RemoveClicked(object sender, EventArgs e)
-    {
-        Item? lastProduct = (BindingContext as ShopViewModel)?.Delete();
-    }
+	private void RemoveClicked(object sender, EventArgs e)
+	{
+		//Item? lastProduct = (BindingContext as ShopViewModel)?.Delete();
+	}
 }

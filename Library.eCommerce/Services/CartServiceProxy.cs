@@ -11,14 +11,16 @@ namespace Library.eCommerce.Services
     public class CartServiceProxy
     {
         private CartServiceProxy() {
-            items = new List<Item>
+            items = new List<Item?>
             {
                 new Item{ Product = new Product{Id = 1, Name ="Product 1"}, Id = 1, Quantity = 10},
                 new Item{ Product = new Product{Id = 2, Name ="Product 2"}, Id = 2, Quantity = 20},
                 new Item{ Product = new Product{Id = 3, Name ="Product 3"}, Id = 3, Quantity = 30}
             };
         }
+
         private static CartServiceProxy? instance;
+        private static ProductServiceProxy? _prodSvc; // left off
         private static object instanceLock = new Object();
 
         public static CartServiceProxy Current
@@ -37,30 +39,30 @@ namespace Library.eCommerce.Services
             }
         }
 
-        private List<Item> items;
+        private List<Item?> items;
 
-        public List<Item> Cart { 
+        public List<Item?> Cart { 
             get 
             {
                 return items;
             }
         }
 
-        public Item? AddToCart(Item? product)
+        public Item? AddToCart(Item? item)
         {
 
-            if (product != null && product.Id != 0)
+            if (item != null && item.Id != 0)
             {
                 var clonedProduct = new Item
                 {
-                    Id = product.Id,
-                    Product = product.Product,
-                    Quantity = product.Quantity
+                    Id = item.Id,
+                    Product = item.Product,
+                    Quantity = item.Quantity
                 };
                 Cart.Add(clonedProduct);
             }
 
-            return product;
+            return item;
         }
 
         public Item? RemoveFromCart(Item? product)
