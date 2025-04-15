@@ -19,12 +19,13 @@ namespace Maui.eCommerce.ViewModels
         private ProductServiceProxy _svcItem = ProductServiceProxy.Current;
 
         public Item? SelectedInventoryItem { get; set; }
+        public Item? SelectedCartItem { get; set; }
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
         public ObservableCollection<Item?> Cart {
             get {
-                return new ObservableCollection<Item?>(_svcCart.Cart);
+                return new ObservableCollection<Item?>(_svcCart.Cart.Where(p => p?.Quantity > 0));
             } 
         }
 
@@ -32,9 +33,44 @@ namespace Maui.eCommerce.ViewModels
         {
             get
             {
-                return new ObservableCollection<Item?>(_svcItem.Products);
+                return new ObservableCollection<Item?>(_svcItem.Products.Where(p => p?.Quantity > 0));
             }
         }
+
+        public void PurchaseItem()
+        {
+            if (SelectedInventoryItem != null)
+            {
+                var shouldRefresh = SelectedInventoryItem.Quantity >= 1;
+                var updatedItem = _svcCart.AddOrUpdate(SelectedInventoryItem); 
+                
+                if (updatedItem != null && shouldRefresh)
+                {
+                    NotifyPropertyChanged(nameof(Inventory));
+                    NotifyPropertyChanged(nameof(Cart));
+                }
+
+            }
+ 
+        }
+
+        public void ReturnItem()
+        {
+            if (SelectedCartItem != null)
+            {
+                var shouldRefresh = SelectedCartItem.Quantity >= 1;
+                var updatedItem = _svcCart.ReturnItem(SelectedCartItem); //issue
+
+                if (updatedItem != null && shouldRefresh)
+                {
+                    NotifyPropertyChanged(nameof(Inventory));
+                    NotifyPropertyChanged(nameof(Cart));
+                }
+
+            }
+
+        }
+
 
         private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
         {
@@ -52,6 +88,5 @@ namespace Maui.eCommerce.ViewModels
         //    NotifyPropertyChanged("Cart");
         //    return item;
         //}
-
     }
 }

@@ -11,7 +11,8 @@ namespace Maui.eCommerce.ViewModels
     public class InventoryManagementViewModel : INotifyPropertyChanged
     {
 
-        private ProductServiceProxy _svc = ProductServiceProxy.Current; // Reference
+        private ProductServiceProxy _itemSvc = ProductServiceProxy.Current; // Reference
+
 
         public event PropertyChangedEventHandler? PropertyChanged;
         public string? Query {  get; set; }
@@ -37,14 +38,14 @@ namespace Maui.eCommerce.ViewModels
         {
             get
             {
-                var filteredList = _svc.Products.Where(p => p?.Product?.Name?.ToLower().Contains(Query?.ToLower() ?? string.Empty) ?? false);
+                var filteredList = _itemSvc.Products.Where(p => p?.Product?.Name?.ToLower().Contains(Query?.ToLower() ?? string.Empty) ?? false);
                 return new ObservableCollection<Item?>(filteredList);
             }
         }
 
         public Item? Delete()
         {
-            var item = _svc.Remove(SelectedProduct ?? null);
+            var item = _itemSvc.Remove(SelectedProduct ?? null);
             NotifyPropertyChanged("Products");
             return item; 
         }

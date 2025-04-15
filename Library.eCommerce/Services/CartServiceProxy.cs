@@ -11,31 +11,23 @@ namespace Library.eCommerce.Services
     public class CartServiceProxy
     {
         private CartServiceProxy() {
-            items = new List<Item?>
-            {
-                new Item{ Product = new Product{Id = 1, Name ="Product 1"}, Id = 1, Quantity = 10},
-                new Item{ Product = new Product{Id = 2, Name ="Product 2"}, Id = 2, Quantity = 20},
-                new Item{ Product = new Product{Id = 3, Name ="Product 3"}, Id = 3, Quantity = 30}
-            };
+            items = new List<Item?>();
         }
 
-        private static CartServiceProxy? instance;
-        private static ProductServiceProxy? _prodSvc; // left off
-        private static object instanceLock = new Object();
+        private static CartServiceProxy? cartInstance;
+        private static ProductServiceProxy _prodSvc = ProductServiceProxy.Current; 
+
 
         public static CartServiceProxy Current
         {
             get
             {
-                lock(instanceLock)
+                if (cartInstance == null)
                 {
-                    if (instance == null)
-                    {
-                        instance = new CartServiceProxy();
-                    }
-                  
+                    cartInstance = new CartServiceProxy();
                 }
-                return instance;
+                  
+                return cartInstance;
             }
         }
 
@@ -48,33 +40,52 @@ namespace Library.eCommerce.Services
             }
         }
 
-        public Item? AddToCart(Item? item)
+        public Item? AddOrUpdate(Item item)
         {
-
-            if (item != null && item.Id != 0)
+            var existingInvItem = _prodSvc.GetById(item.Id);
+            if (existingInvItem != null && existingInvItem.Quantity > 0)
             {
-                var clonedProduct = new Item
+                existingInvItem.Quantity--;
+                var existingItem = Cart.FirstOrDefault(p => p.Id == item.Id);
+
+                if (existingItem == null)
                 {
-                    Id = item.Id,
-                    Product = item.Product,
-                    Quantity = item.Quantity
-                };
-                Cart.Add(clonedProduct);
+                    var newItem = new Item(item);
+                    newItem.Quantity = 1;
+                    Cart.Add(newItem);
+                }
+                else
+                {
+                    existingItem.Quantity++;
+                }
             }
 
-            return item;
+            return existingInvItem;
         }
 
-        public Item? RemoveFromCart(Item? product)
+        public Item? ReturnItem(Item? item)
         {
 
-            if (product != null)
+            if (item?.Id <= 0 || item == null)
             {
-                var selectedProd = Cart.FirstOrDefault(p => p.Id == product.Id);
-                Cart.Remove(selectedProd);
+                return null;
+            }
+            var itemToReturn = Cart.FirstOrDefault(i => i.Id == item.Id);
+            if (itemToReturn != null && itemToReturn.Quantity > 0)
+            {
+                itemToReturn.Quantity--;
+                
+                var inventoryItem = _prodSvc.Products.FirstOrDefault(i => i.Id == item.Id);
+                if (inventoryItem != null)
+                {
+                    inventoryItem.Quantity++;
+                } else
+                {
+                    _prodSvc.AddOrUpdate(new Item(itemToReturn));
+                }
             }
 
-            return product;
+            return itemToReturn;
         }
 
         public double checkOut()
@@ -90,5 +101,6 @@ namespace Library.eCommerce.Services
             
             return checkOut;
         }
+
     }
 }

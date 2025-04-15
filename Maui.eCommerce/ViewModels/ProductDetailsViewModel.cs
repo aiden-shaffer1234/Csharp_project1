@@ -72,13 +72,13 @@ namespace Maui.eCommerce.ViewModels
 
         public void Undo()
         {
-            Model = ProductServiceProxy.Current.AddOrUpdateProduct(cachedModel);
+            Model = ProductServiceProxy.Current.AddOrUpdate(cachedModel);
         }
 
         public void AddOrUpdate()
         {
             // DP SOMETHONG TO CONDITION THE UPDATE VS ADD
-            _svc.AddOrUpdateProduct(Model);
+            _svc.AddOrUpdate(Model);
         }
     }
 }
