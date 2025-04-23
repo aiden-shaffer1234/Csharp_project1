@@ -27,4 +27,9 @@
     Title="Product Details"
     ContentTemplate="{DataTemplate views:ProductDetailsView}"
     Route="ProductDetails" />
+
+    <ShellContent
+    Title="Checkout"
+    ContentTemplate="{DataTemplate views:CheckOutView}"
+    Route="Checkout" />
 </Shell>

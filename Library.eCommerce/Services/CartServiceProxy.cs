@@ -88,19 +88,23 @@ namespace Library.eCommerce.Services
             return itemToReturn;
         }
 
-        public double checkOut()
+        public void checkOut()
         {
-            double checkOut = 0;
-            var inventory = ProductServiceProxy.Current.Products;
-            foreach (var item in Cart)
-            {
-
-            }
             Cart.Clear();
-            checkOut *= 1.07;
-            
-            return checkOut;
         }
 
+        public double getTotalPrice()
+        {
+            double checkOut = 0;
+            foreach (var item in Cart)
+            {
+                if (item != null)
+                {
+                    checkOut += (double)(((item?.Product?.Price ?? 0) * item?.Quantity) ?? 0);
+                }
+            }
+            checkOut *= 1.07;
+            return checkOut;
+        }
     }
 }

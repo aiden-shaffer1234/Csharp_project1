@@ -13,7 +13,7 @@ namespace Library.eCommerce.DTO
 
         //maybe private setters
         public int Id { get; set; }
-        public double? Price { get; set; }
+        public double Price { get; set; }
 
         public string? Display
         {
@@ -28,6 +28,12 @@ namespace Library.eCommerce.DTO
             Price = 0;
         }
 
+        public ProductDTO(Product copy)
+        {
+            Id = copy.Id;
+            Name = copy.Name;
+            Price = copy.Price;
+        }
         public ProductDTO(ProductDTO copy)
         {
             Id = copy.Id;

@@ -21,4 +21,24 @@ public partial class ShopView : ContentPage
     {
 		(BindingContext as ShopViewModel)?.PurchaseItem();
     }
+
+    private void InlineAddClicked(object sender, EventArgs e)
+    {
+		(BindingContext as ShopViewModel)?.Refresh();
+    }
+
+    private void GoBackClicked(object sender, EventArgs e)
+    {
+        Shell.Current.GoToAsync("//MainPage");
+    }
+
+    private void CheckOutClicked(object sender, EventArgs e)
+    {
+        Shell.Current.GoToAsync("//Checkout");
+    }
+
+    private void ContentPage_NavigatedTo(object sender, NavigatedToEventArgs e)
+    {
+        (BindingContext as ShopViewModel)?.Refresh();
+    }
 }

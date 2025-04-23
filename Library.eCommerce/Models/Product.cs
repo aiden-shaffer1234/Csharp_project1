@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Library.eCommerce.DTO;
 
 namespace Csharp_project1.Models
 {
@@ -12,7 +13,7 @@ namespace Csharp_project1.Models
 
         //maybe private setters
         public int Id { get; set; }
-        public double? Price {  get; set; } 
+        public double Price {  get; set; } 
 
         public string? Display 
         {  
@@ -28,6 +29,13 @@ namespace Csharp_project1.Models
         }
 
         public Product(Product copy)
+        {
+            Id = copy.Id;
+            Name = copy.Name;
+            Price = copy.Price;
+        }
+
+        public Product(ProductDTO copy)
         {
             Id = copy.Id;
             Name = copy.Name;
