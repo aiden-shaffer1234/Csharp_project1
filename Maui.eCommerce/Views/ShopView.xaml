@@ -2,41 +2,67 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Maui.eCommerce.Views.ShopView"
-             Title="ShopView">
-    <VerticalStackLayout>
-        <Label 
-            Text="Shop"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+             Title="ShopView"
+             NavigatedTo="ContentPage_NavigatedTo">
 
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
 
-            <Grid Grid.Column="0">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height= "10*"/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height= "10*"/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
 
-                <ListView
-                    Grid.Row="0"
-                    ItemsSource="{Binding Inventory}"
-                    SelectedItem ="{Binding SelectedProduct}"/>
-                <Button Grid.Row="1" Text="+"/>
-            </Grid>
-            <Grid Grid.Column="1">
+            <ListView
+                Grid.Row="0"
+                ItemsSource="{Binding Inventory}"
+                SelectedItem ="{Binding SelectedInventoryItem}"
+            >
 
-            </Grid>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="5*"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Column="0" Text="{Binding Model.Display}"/>
+                                <Button Grid.Column="1" Text="+" Command="{Binding AddCommand}" Clicked="InlineAddClicked"/>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+            <Button Grid.Row="1" Text="+" Clicked="AddToCartClicked"/>
+            <Button Grid.Row="2" Text="Go Back" Clicked="GoBackClicked"/>
         </Grid>
-
-        <Button Text="Add to cart"/>
-        <Button Text="Remove from cart" Clicked="RemoveClicked"/>
-        <Button Text="Edit cart"/>
-
-
-    </VerticalStackLayout>
-    
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height= "10*"/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <ListView
+            Grid.Row="0"
+            ItemsSource="{Binding Cart}"
+            SelectedItem ="{Binding SelectedCartItem}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Label Text="{Binding Model.Display}"/>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <Button Grid.Row="1" Text="-" Clicked="RemoveFromCartClicked"/>
+            <Button Grid.Row="2" Text="Check Out" Clicked="CheckOutClicked"/>
+        </Grid>
+    </Grid>
 </ContentPage>

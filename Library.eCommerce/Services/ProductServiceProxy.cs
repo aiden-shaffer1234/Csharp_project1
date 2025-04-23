@@ -4,21 +4,27 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Csharp_project1.Models;
+using Library.eCommerce.DTO;
 using Library.eCommerce.Models;
+using Library.eCommerce.Utilities;
+using Newtonsoft.Json;
 
 namespace Library.eCommerce.Services
 {
     public class ProductServiceProxy
     {
-        
+        //private CartServiceProxy _cartSvc = CartServiceProxy.Current; // Reference
+
         private static object instanceLock = new Object();
-        private ProductServiceProxy( ) {
+        private ProductServiceProxy() {
+            //var productPayload = new WebRequestHandler().Get("/Inventory").Result;
+            //Products = JsonConvert.DeserializeObject<List<Item>>(productPayload) ?? new List<Item>();
             Products = new List<Item?>
-            {
-                new Item{ Product = new Product{Id = 1, Name ="Product 1"}, Id = 1, Quantity = 10},
-                new Item{ Product = new Product{Id = 2, Name ="Product 2"}, Id = 2, Quantity = 20},
-                new Item{ Product = new Product{Id = 3, Name ="Product 3"}, Id = 3, Quantity = 30}
-            };
+        {
+            new Item{ Product = new ProductDTO{Id = 1, Name ="Product 1", Price = 10}, Id = 1, Quantity = 10},
+            new Item{ Product = new ProductDTO{Id = 2, Name ="Product 2", Price = 20}, Id = 2, Quantity = 20},
+            new Item{ Product = new ProductDTO{Id = 3, Name ="Product 3", Price = 30}, Id = 3, Quantity = 30}
+        };
         }
 
         private int LastKey
@@ -52,7 +58,7 @@ namespace Library.eCommerce.Services
         }
         public List<Item?> Products { get; private set; } // => is the same as products with only a get 
 
-        public Item AddOrUpdateProduct(Item newItem)
+        public Item AddOrUpdate(Item newItem)
         {
             if (newItem.Id == 0)
             {
@@ -62,24 +68,44 @@ namespace Library.eCommerce.Services
             } else //watch out
             {
                 var oldItem = GetById(newItem.Id);
-                var index = Products.IndexOf(oldItem);
-                Products.Remove(oldItem);
-                Products.Insert(index, newItem);
+                if (oldItem != null)
+                {
+                    var index = Products.IndexOf(oldItem);
+                    Products.Remove(oldItem);
+                    Products.Insert(index, newItem);
+                }
             }
 
             return newItem;
         }
 
-        // my delete before i looked at the repo
-        public Item? Remove(Item? product)
-        {
-            if (product != null)
-            {
-                Products.Remove(product);
-            }
 
-            return product;
-        }
+        //public Item? PurchaseItem(Item item)
+        //{
+        //    if(item?.Id <= 0 || item == null)
+        //    {
+        //        return null;
+        //    }
+        //    var itemToPurchase = GetById(item.Id);
+        //    if (itemToPurchase != null && itemToPurchase.Quantity > 0)
+        //    {
+        //        itemToPurchase.Quantity--;
+
+        //    }
+
+        //    return itemToPurchase;
+        //}
+
+        // my delete before i looked at the repo
+        //public Item? Remove(Item? product)
+        //{
+        //    if (product != null)
+        //    {
+        //        Products.Remove(product);
+        //    }
+
+        //    return product;
+        //}
 
         public Item? Delete(int id)
         {

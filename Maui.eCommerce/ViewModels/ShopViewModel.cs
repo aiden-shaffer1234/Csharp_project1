@@ -18,23 +18,59 @@ namespace Maui.eCommerce.ViewModels
         private CartServiceProxy _svcCart = CartServiceProxy.Current;
         private ProductServiceProxy _svcItem = ProductServiceProxy.Current;
 
-        public Item? SelectedInventoryItem { get; set; }
+        public ItemViewModel? SelectedInventoryItem { get; set; }
+        public ItemViewModel? SelectedCartItem { get; set; }
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        public ObservableCollection<Item?> Cart {
+        public ObservableCollection<ItemViewModel?> Cart {
             get {
-                return new ObservableCollection<Item?>(_svcCart.Cart);
+                return new ObservableCollection<ItemViewModel?>(_svcCart.Cart.Where(p => p?.Quantity > 0).Select(m => new ItemViewModel(m)));
             } 
         }
 
-        public ObservableCollection<Item?> Inventory
+        public ObservableCollection<ItemViewModel?> Inventory
         {
             get
             {
-                return new ObservableCollection<Item?>(_svcItem.Products);
+                return new ObservableCollection<ItemViewModel?>(_svcItem.Products.Where(p => p?.Quantity > 0).Select(m => new ItemViewModel(m)));
             }
         }
+
+        public void PurchaseItem()
+        {
+            if (SelectedInventoryItem != null)
+            {
+                var shouldRefresh = SelectedInventoryItem.Model.Quantity >= 1;
+                var updatedItem = _svcCart.AddOrUpdate(SelectedInventoryItem.Model); 
+                
+                if (updatedItem != null && shouldRefresh)
+                {
+                    NotifyPropertyChanged(nameof(Inventory));
+                    NotifyPropertyChanged(nameof(Cart));
+                }
+
+            }
+ 
+        }
+
+        public void ReturnItem()
+        {
+            if (SelectedCartItem != null)
+            {
+                var shouldRefresh = SelectedCartItem.Model.Quantity >= 1;
+                var updatedItem = _svcCart.ReturnItem(SelectedCartItem.Model); //issue
+
+                if (updatedItem != null && shouldRefresh)
+                {
+                    NotifyPropertyChanged(nameof(Inventory));
+                    NotifyPropertyChanged(nameof(Cart));
+                }
+
+            }
+
+        }
+
 
         private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
         {
@@ -46,12 +82,16 @@ namespace Maui.eCommerce.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        public void Refresh()
+        {
+            NotifyPropertyChanged(nameof(Inventory));
+            NotifyPropertyChanged(nameof(Cart));
+        }
         //public Item? Delete()
         //{
         //    var item = _svcCart.RemoveFromCart(SelectedInventoryItem ?? null);
         //    NotifyPropertyChanged("Cart");
         //    return item;
         //}
-
     }
 }

@@ -3,39 +3,38 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Library.eCommerce.DTO;
+using Csharp_project1.Models;
 
-namespace Csharp_project1.Models
+namespace Library.eCommerce.DTO
 {
-    public class Product
+    public class ProductDTO
     {
         public string? Name { get; set; }
 
         //maybe private setters
         public int Id { get; set; }
-        public double Price {  get; set; } 
+        public double Price { get; set; }
 
-        public string? Display 
-        {  
+        public string? Display
+        {
             get
             {
                 return $"{Id}.\t{Name}";
             }
         }
-        public Product()
+        public ProductDTO()
         {
             Name = string.Empty;
             Price = 0;
         }
 
-        public Product(Product copy)
+        public ProductDTO(Product copy)
         {
             Id = copy.Id;
             Name = copy.Name;
             Price = copy.Price;
         }
-
-        public Product(ProductDTO copy)
+        public ProductDTO(ProductDTO copy)
         {
             Id = copy.Id;
             Name = copy.Name;
@@ -46,6 +45,5 @@ namespace Csharp_project1.Models
         {
             return Display ?? string.Empty;
         }
-
     }
 }
